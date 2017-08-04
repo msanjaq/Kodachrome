@@ -1,16 +1,17 @@
 import pygame
 
-import controller
-
 class Model(object):
     '''
     classdocs
     '''
 
 
-    def __init__(self, level):
+    def __init__(self, controller):
         '''
         Constructor
         '''
-        pass
+        self.controller = controller
         
+    def update(self) -> bool:
+        self.controller.get()
+        return not self.controller.quit

@@ -6,8 +6,15 @@ class Controller(object):
     '''
 
 
-    def __init__(self, params):
+    def __init__(self):
         '''
         Constructor
         '''
-        pass
+        self.quit = False
+        
+        
+    def get(self) -> None:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.quit = True
