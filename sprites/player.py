@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
     classdocs
     '''
 
-    speed = 10
+    speed = 5
     def __init__(self):
         '''
         Constructor
@@ -51,19 +51,26 @@ class Player(pygame.sprite.Sprite):
         self._calc_gravity()
 
         self.rect.x += self.dx
-    
+        for sprite in self._get_collisions():
+            if isinstance(sprite, Platform):
+                if self.dx > 0:
+                    self.rect.right  = sprite.rect.left
+
+                elif self.dx < 0:
+                    self.rect.left   = sprite.rect.right
+        
+        
         self.rect.y += self.dy
-        print(self.dy)
         for sprite in self._get_collisions():
             if isinstance(sprite, Platform):
                 if self.dy > 0:
                     self.rect.bottom = sprite.rect.top
                 
                 elif self.dy < 0:
-                    self.rect.top = sprite.rect.bottom
+                    self.rect.top    = sprite.rect.bottom
                 
                 self.dy = 0
-                
+
     def _calc_gravity(self):
         self.dy += 1
 
