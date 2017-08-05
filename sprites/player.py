@@ -30,7 +30,8 @@ class Player(pygame.sprite.Sprite):
         self.dy = 0
         
     def jump(self):
-        self.dy = -20
+        if self.dy in {0,18,19,20}:
+            self.dy = -20
     
     def left(self):
         self.dx = -Player.speed
@@ -52,6 +53,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += self.dx
     
         self.rect.y += self.dy
+        print(self.dy)
         for sprite in self._get_collisions():
             if isinstance(sprite, Platform):
                 if self.dy > 0:
@@ -62,12 +64,9 @@ class Player(pygame.sprite.Sprite):
                 
                 self.dy = 0
                 
-        
-    
     def _calc_gravity(self):
         self.dy += 1
 
-        
     def _get_collisions(self):
         for group in self.groups():
             collisions = pygame.sprite.spritecollide(self, group, False)
