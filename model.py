@@ -7,15 +7,16 @@ class Model(object):
     '''
 
 
-    def __init__(self, controller):
+    def __init__(self, level, controller_type):
         '''
         Constructor
         '''
-        self.controller   = controller
+        self.controller = controller_type(level.player)
+
         self.sprite_group = pygame.sprite.Group()
-        self.sprite_group.add(controller.player)
+        self.sprite_group.add(level.player)
+        self.sprite_group.add(level.platform_list)
         
-    def update(self) -> bool:
+    def update(self) -> None:
         self.controller.get()
         self.sprite_group.update()
-        return not self.controller.quit
