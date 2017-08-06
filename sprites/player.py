@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
     '''
 
     speed = 5
-    def __init__(self):
+    def __init__(self, coord=(0,0)):
         '''
         Constructor
         '''
@@ -23,8 +23,8 @@ class Player(pygame.sprite.Sprite):
         self.image.fill((255,255,255))
 
         self.rect   = self.image.get_rect()
-        self.rect.x = 30
-        self.rect.y = 30
+        self.rect.x = coord[0]
+        self.rect.y = coord[0]
 
         self.dx = 0
         self.dy = 0
@@ -58,7 +58,6 @@ class Player(pygame.sprite.Sprite):
 
                 elif self.dx < 0:
                     self.rect.left   = sprite.rect.right
-        
         
         self.rect.y += self.dy
         for sprite in self._get_collisions():
