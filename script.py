@@ -1,9 +1,11 @@
-from controller import Controller
-from model      import Model
-from view       import View
-from player     import Player
+from controller      import Controller
+from level_generator import Level
+from model           import Model
+from view            import View
+from sprites.player  import Player
 
 if __name__ == '__main__':
-    v = View(Model(Controller(Player())))
+    level0     = Level("./levels/level0.txt", View.width, View.height)
+    model      = Model(level0, Controller)
+    v = View(model)
     v.run()
-    pass
