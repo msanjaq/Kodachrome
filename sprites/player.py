@@ -3,8 +3,6 @@ Created on Aug 3, 2017
 
 @author: Moe Sanjaq
 '''
-from enum import Enum, unique
-
 import pygame
 
 from .gravity_sprite    import GravitySprite
@@ -18,18 +16,18 @@ class Player(GravitySprite):
     '''
 
     speed = 5
-    def __init__(self, coord=(0,0)):
+    def __init__(self, x, y):
         '''
         Constructor
         '''
         GravitySprite.__init__(self)
 
-        self.image    = pygame.Surface((10,30))
-        self.image.fill((255,255,255))
+        self.image  = pygame.Surface((10,30))
+        self.image.fill(PowerUpColors.WHITE.value)
 
         self.rect   = self.image.get_rect()
-        self.rect.x = coord[0]
-        self.rect.y = coord[1]
+        self.rect.x = x 
+        self.rect.y = y 
 
         self.dx = 0
         self.dy = 0

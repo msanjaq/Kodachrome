@@ -14,8 +14,7 @@ class Level(object):
     def __init__(self, 
                 level_file  : str, 
                 level_width : int,
-                level_height: int, 
-                player_start_coord = (0,0)):
+                level_height: int):
         '''
         Constructor
         '''
@@ -36,7 +35,7 @@ class Level(object):
                 elif self._level[line_num][col_num] == "p":
                     x = col_num   * self._width_scale 
                     y = line_num  * self._height_scale
-                    self.player = Player(coord=(x,y))
+                    self.player = Player(x,y)
                 
                 elif self._level[line_num][col_num] == "O":
                     self._add_power_up(line_num, col_num, PowerUpColors.ORANGE)
