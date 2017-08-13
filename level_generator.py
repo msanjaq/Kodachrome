@@ -1,6 +1,7 @@
-from sprites.platform import Platform
-from sprites.player   import Player
-from sprites.powerups import PowerUp, PowerUpColors
+from sprites.platform     import Platform
+from sprites.player       import Player
+from sprites.powerups     import PowerUp, PowerUpColors
+from sprites.simple_enemy import SimpleEnemy
 
 class LevelGeneratorException(Exception):
     pass
@@ -18,8 +19,9 @@ class Level(object):
         '''
         Constructor
         '''
-        self.platform_list = []
-        self.player        = None
+        self.platform_list  = []
+        self.player         = None
+        self.mobile_sprites = []
         
         with open(level_file) as file:
             self._level = file.readlines()
@@ -39,6 +41,25 @@ class Level(object):
                 
                 elif self._level[line_num][col_num] == "O":
                     self._add_power_up(line_num, col_num, PowerUpColors.ORANGE)
+
+                elif self._level[line_num][col_num] == "s":
+                    self._add_enemy(line_num, col_num, SimpleEnemy)
+                    
+
+    def _get_dimension_tuple(self, line_num: int, col_num: int) -> ('x', 
+                                                                    'y',
+                                                                    'width', 
+                                                                    'height'):
+        x           = self._width_scale  * col_num
+        y           = self._height_scale * line_num
+        text_width  = _get_platform_width(self._level[line_num][col_num+1:], line_num, col_num)
+        text_height = _get_platform_height(self._level[line_num+1:], line_num, col_num)
+        width       = self._width_scale  * text_width
+        height      = self._height_scale * text_height
+        
+        return (x, y, width, height)
+        
+
         
     def _add_platform(self, line_num: int, col_num: int) -> None:
         x           = self._width_scale  * col_num
@@ -49,7 +70,7 @@ class Level(object):
         height      = self._height_scale * text_height
         self.platform_list.append(Platform(x, y, width, height))
     
-    def _add_power_up(self, line_num: int, col_num:int, color: PowerUpColors) -> None:
+    def _add_power_up(self, line_num: int, col_num: int, color: PowerUpColors) -> None:
         x           = self._width_scale  * col_num
         y           = self._height_scale * line_num
         text_width  = _get_platform_width(self._level[line_num][col_num+1:], line_num, col_num)
@@ -57,6 +78,10 @@ class Level(object):
         width       = self._width_scale  * text_width
         height      = self._height_scale * text_height
         self.platform_list.append(PowerUp(x, y, width, height, color))
+    
+    def _add_enemy(self, line_num: int, col_num: int, enemy_type) -> None:
+        dim = self._get_dimension_tuple(line_num, col_num)
+        self.mobile_sprites.append(enemy_type(*dim))
 
     
 
@@ -93,4 +118,5 @@ def _get_longest_line_len(lines: [str]) -> int:
 if __name__ == "__main__":
     l = Level("./levels/level0.txt", 800, 800)
     print(l.platform_list)
+    print(l.mobile_sprites)
         
