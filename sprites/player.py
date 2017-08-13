@@ -3,11 +3,16 @@ Created on Aug 3, 2017
 
 @author: Moe Sanjaq
 '''
+from enum import Enum, unique
+
 import pygame
-from .platform import Platform
 
+from .gravity_sprite    import GravitySprite
+from .platform          import Platform
+from .powerups          import PowerUpColors, PowerUp
+from Kodachrome.sprites import gravity_sprite
 
-class Player(pygame.sprite.Sprite):
+class Player(GravitySprite):
     '''
     classdocs
     '''
@@ -17,20 +22,26 @@ class Player(pygame.sprite.Sprite):
         '''
         Constructor
         '''
-        pygame.sprite.Sprite.__init__(self)
+        GravitySprite.__init__(self)
 
         self.image    = pygame.Surface((10,30))
         self.image.fill((255,255,255))
 
         self.rect   = self.image.get_rect()
         self.rect.x = coord[0]
-        self.rect.y = coord[0]
+        self.rect.y = coord[1]
 
         self.dx = 0
         self.dy = 0
         
+        self.color = PowerUpColors.WHITE
+        
     def jump(self):
-        if self.dy in {0,18,19,20}:
+        if self.color == PowerUpColors.ORANGE:
+            if self.dy in {0, -18, -19, -20}:
+                self.dy = 20
+
+        elif self.dy in {0,18,19,20}:
             self.dy = -20
     
     def left(self):
@@ -47,9 +58,25 @@ class Player(pygame.sprite.Sprite):
         if self.dx == Player.speed:
             self.dx = 0
     
+    def power(self):
+        if self.color == PowerUpColors.ORANGE:
+            GravitySprite.gravity = -1 if GravitySprite.gravity == 1 else 1
+    
     def update(self):
         self._calc_gravity()
+        self._update_x_direction()
+        self._update_y_direction()
+        self._update_color()
+    
+    def _calc_gravity(self):
+        self.dy += GravitySprite.gravity
 
+    def _get_collisions(self):
+        for group in self.groups():
+            collisions = pygame.sprite.spritecollide(self, group, False)
+            return collisions
+    
+    def _update_x_direction(self):
         self.rect.x += self.dx
         for sprite in self._get_collisions():
             if isinstance(sprite, Platform):
@@ -58,7 +85,8 @@ class Player(pygame.sprite.Sprite):
 
                 elif self.dx < 0:
                     self.rect.left   = sprite.rect.right
-        
+    
+    def _update_y_direction(self):
         self.rect.y += self.dy
         for sprite in self._get_collisions():
             if isinstance(sprite, Platform):
@@ -69,14 +97,12 @@ class Player(pygame.sprite.Sprite):
                     self.rect.top    = sprite.rect.bottom
                 
                 self.dy = 0
-
-    def _calc_gravity(self):
-        self.dy += 1
-
-    def _get_collisions(self):
-        for group in self.groups():
-            collisions = pygame.sprite.spritecollide(self, group, False)
-            return collisions
+    
+    def _update_color(self):
+        for sprite in self._get_collisions():
+            if isinstance(sprite, PowerUp):
+                self.color = sprite.color
+                self.image.fill(sprite.color.value)
         
     
         
