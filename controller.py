@@ -19,13 +19,14 @@ class Controller(object):
                 pygame.K_LEFT    : self.player.left ,
                 pygame.K_RIGHT   : self.player.right,
                 pygame.K_UP      : self.player.jump ,
-                pygame.K_ESCAPE  : sys.exit
+                pygame.K_SPACE   : self.player.power,
+                pygame.K_ESCAPE  : sys.exit,
                 },
             
             pygame.KEYUP : {
                 pygame.K_LEFT   : self.player.stop_left,
-                pygame.K_RIGHT  : self.player.stop_right 
-                }
+                pygame.K_RIGHT  : self.player.stop_right,
+                },
         }
 
     def get(self) -> None:
