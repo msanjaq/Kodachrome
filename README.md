@@ -1,4 +1,6 @@
 # Kodachrome
+Tested and working on Windows 10.
+Known OSX issue that may stem from the pygame library.
 
 ## How to start the game
   
