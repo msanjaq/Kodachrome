@@ -1,9 +1,3 @@
-'''
-Created on Aug 12, 2017
-
-@author: Moe Sanjaq
-'''
-
 from enum import Enum, unique
 
 import pygame
@@ -18,10 +12,10 @@ class PowerUp(pygame.sprite.Sprite):
     classdocs
     '''
 
-
-    def __init__(self, x: float, y: float, 
-                 width: float, height: float, 
-                 color: PowerUpColors):
+    def __init__(self, 
+            x: float, y: float, 
+            width: float, height: float, 
+            color: PowerUpColors):
         '''
         Constructor
         '''
