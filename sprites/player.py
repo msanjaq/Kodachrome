@@ -8,7 +8,6 @@ import pygame
 from .gravity_sprite    import GravitySprite
 from .platform          import Platform
 from .powerups          import PowerUpColors, PowerUp
-from Kodachrome.sprites import gravity_sprite
 
 class Player(GravitySprite):
     '''
